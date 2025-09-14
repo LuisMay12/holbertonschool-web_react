@@ -48,7 +48,7 @@ function createEmployee(salary: number | string): Employee {
   return new Director();
 }
 
-// --- Example checks (optional) ---
+// --- Example checks ---
 const e1 = createEmployee(200);
 const e2 = createEmployee(1000);
 const e3 = createEmployee('$500');
@@ -56,3 +56,22 @@ const e3 = createEmployee('$500');
 console.log(e1.constructor.name); // Teacher
 console.log(e2.constructor.name); // Director
 console.log(e3.constructor.name); // Director
+
+
+// 6. Creating functions specific to employees
+
+// Type predicate: narrows Employee -> Director
+function isDirector(employee: Employee): employee is Director {
+  return employee instanceof Director;
+}
+
+// Executes the right work method based on type
+function executeWork(employee: Employee): string {
+  return isDirector(employee)
+    ? employee.workDirectorTasks()
+    : employee.workTeacherTasks();
+}
+
+// --- Expected result ---
+console.log(executeWork(createEmployee(200)));   // Getting to work
+console.log(executeWork(createEmployee(1000)));  // Getting to director tasks
